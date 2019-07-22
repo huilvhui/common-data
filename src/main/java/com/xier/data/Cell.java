@@ -1,3 +1,5 @@
+package com.xier.data;
+
 
 public class Cell implements FrontCell{
 
