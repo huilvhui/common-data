@@ -4,7 +4,7 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.hikvision.dynamic.base.IGeneralErrorCode;
+import com.xier.dynamic.base.IGeneralErrorCode;
 
 
 
