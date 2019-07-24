@@ -1,5 +1,6 @@
 package com.xier.data;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class Cell implements FrontCell{
 
