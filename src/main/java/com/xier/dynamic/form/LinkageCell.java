@@ -3,7 +3,7 @@ package com.xier.dynamic.form;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.hikvision.dynamic.constant.EnumInputType;
+import com.xier.dynamic.constant.EnumInputType;
 
 /**
  * <p>
