@@ -3,7 +3,7 @@ package com.xier.dynamic.base;
 import java.util.List;
 import java.util.Map;
 
-import com.hikvision.dynamic.data.block.PersistBlock.Filter;
+import com.xier.dynamic.data.block.PersistBlock.Filter;
 
 public class BaseQuery<T> extends BaseResp {
 	
