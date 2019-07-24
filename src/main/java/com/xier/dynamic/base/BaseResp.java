@@ -3,7 +3,7 @@ package com.xier.dynamic.base;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hikvision.dynamic.constant.EnumErrorDict;
+import com.xier.dynamic.constant.EnumErrorDict;
 
 /**
  * <p>
