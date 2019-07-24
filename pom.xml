@@ -1,0 +1,396 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.xier</groupId>
+	<artifactId>common-data</artifactId>
+	<version>1.27.0</version>
+
+	<packaging>jar</packaging>
+	<name>common-data</name>
+	<description>An common data handler implementation.</description>
+	<url>https://github.com/alibaba/druid</url>
+
+	<properties>
+		<spring.version>4.2.5.RELEASE</spring.version>
+		<junit.version>4.12</junit.version>
+		<jmh.version>1.19</jmh.version>
+
+		<gpg.skip>true</gpg.skip>
+		<javadoc.skip>true</javadoc.skip>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jdk.version>1.6</jdk.version>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>local-file</id>
+			<url>file://${basedir}/lib/</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
+
+	<developers>
+		<developer>
+			<id>lvhui</id>
+			<name>lvhui</name>
+			<email>get110000@163.com</email>
+		</developer>
+	</developers>
+
+	<build>
+		<plugins>
+      <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version><!--$NO-MVN-MAN-VER$-->
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>utf-8</encoding>
+				</configuration>
+			</plugin>
+			<!-- findbugs -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>3.0.4</version>
+				<configuration>
+					<!-- <excludeFilterFile>tools/findbugs/findbugs-exclude.xml</excludeFilterFile> -->
+					<threshold>High</threshold>
+					<effort>Default</effort>
+					<findbugsXmlOutput>true</findbugsXmlOutput>
+					<findbugsXmlOutputDirectory>target/site/findbugs</findbugsXmlOutputDirectory>
+				</configuration>
+			</plugin>
+			
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skip>false</skip>
+					<argLine>-Xms256m -Xmx256m -XX:PermSize=64m -XX:MaxPermSize=64m -Dfile.encoding=utf-8</argLine>
+					<includes>
+						<include>**/*Test.java</include>
+					</includes>
+					<systemPropertyVariables>
+						<io.springfox.staticdocs.outputDir>${project.build.directory}/swagger</io.springfox.staticdocs.outputDir>
+						<io.swagger.json.uris>/v2/api-docs?group=API,/v2/api-docs?group=service,/v2/api-docs?group=service1</io.swagger.json.uris>
+						<io.swagger.json.output.name>swagger-demo-api.json,swagger-ncg-api.json,swagger-ioc-api.json</io.swagger.json.output.name>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<configuration>
+					<format>xml</format>
+					<encoding>utf-8</encoding>
+					<instrumentation>
+					</instrumentation>
+				</configuration>
+			</plugin>
+			<!-- 加了这项配置，war包会有两个同名jar，因此去掉 -->
+			<!-- <plugin> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-maven-plugin</artifactId>
+				</plugin> -->	
+		</plugins>
+	</build>
+
+
+	<dependencies>  
+    <dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-test</artifactId>
+		    <!-- <version>4.3.9.RELEASE</version> --><!--$NO-MVN-MAN-VER$-->
+		    <scope>test</scope>
+		</dependency>
+
+		<!--  swagger  接口 -->
+		<dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.4.0</version>
+        </dependency>
+        
+        <dependency>
+		    <groupId>io.swagger.core.v3</groupId>
+		    <artifactId>swagger-models</artifactId>
+		    <version>2.0.2</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+		  	<artifactId>jackson-databind</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+		  	<artifactId>jackson-core</artifactId>
+		  	<version>2.9.6</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
+		
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+		  	<artifactId>jackson-annotations</artifactId>
+		</dependency>
+		
+		<dependency>
+  			<groupId>org.springframework</groupId>
+  			<artifactId>spring-core</artifactId>
+  			<version>4.3.18.RELEASE</version><!-- $NO-MVN-MAN-VER$ -->
+		</dependency>
+
+		<dependency>
+			<groupId>org.opensaml</groupId>
+			<artifactId>opensaml</artifactId>
+			<version>2.6.4</version><!--$NO-MVN-MAN-VER$-->
+			<exclusions>
+				<exclusion>
+					<artifactId>esapi</artifactId>
+					<groupId>org.owasp.esapi</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>not-yet-commons-ssl</artifactId>
+					<groupId>ca.juliusdavies</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-httpclient</artifactId>
+					<groupId>commons-httpclient</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>xmltooling</artifactId>
+					<groupId>org.opensaml</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.4.10</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
+			
+		<dependency>
+		    <groupId>org.hibernate.validator</groupId>
+		    <artifactId>hibernate-validator</artifactId>
+		    <version>6.0.11.Final</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>javax.validation</groupId>
+		    <artifactId>validation-api</artifactId>
+		    <version>2.0.1.Final</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
+				
+		<dependency>
+			<artifactId>tomcat-embed-core</artifactId>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<version>8.5.32</version><!--$NO-MVN-MAN-VER$-->
+			<scope>provided</scope>
+		</dependency>
+		
+		
+		<dependency>
+			<artifactId>tomcat-embed-el</artifactId>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<version>8.5.32</version><!--$NO-MVN-MAN-VER$-->
+			<scope>provided</scope>
+		</dependency>
+		
+		
+		<dependency>
+			<artifactId>tomcat-embed-websocket</artifactId>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<version>8.5.32</version><!--$NO-MVN-MAN-VER$-->
+			<!-- <version>8.5.16</version> -->
+			<scope>provided</scope>
+		</dependency>
+		<!--  -->
+
+		<dependency>  
+	            <groupId>org.springframework.boot</groupId>  
+	            <artifactId>spring-boot-starter-test</artifactId>  
+	            <scope>test</scope>
+	            <!-- <exclusions>
+	            	<exclusion>
+	            		<artifactId>spring-test</artifactId>
+	            		<groupId>org.springframework</groupId>
+	            	</exclusion>
+	            </exclusions> -->
+		</dependency>
+	
+		<dependency>
+			<groupId>org.springframework.ldap</groupId>
+			<artifactId>spring-ldap-core</artifactId>
+			<version>2.3.2.RELEASE</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.ldap</groupId>
+			<artifactId>spring-ldap-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-httpclient</artifactId>
+					<groupId>commons-httpclient</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		
+		<dependency>
+		    <groupId>com.google.guava</groupId>
+		    <artifactId>guava</artifactId>
+		    <version>25.1-jre</version>
+		    <exclusions>
+				<exclusion>
+					<artifactId>checker-compat-qual</artifactId>
+					<groupId>org.checkerframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+				<groupId>org.easyframe</groupId>
+				<artifactId>jef-maven-plugin</artifactId>
+				<version>1.11.10.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>org.easyframe</groupId>
+				<artifactId>spring-data-geequery</artifactId>
+				<version>1.11.10.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>org.easyframe</groupId>
+				<artifactId>common-orm</artifactId>
+				<version>1.11.10.RELEASE</version>
+				<exclusions>
+					<exclusion>
+						<groupId>com.belerweb</groupId>
+						<artifactId>pinyin4j</artifactId>
+					</exclusion>
+				</exclusions>
+		</dependency>
+
+		<dependency>
+		   <groupId>org.apache.activemq</groupId>
+		   <artifactId>activemq-client</artifactId>
+		   <version>5.15.4</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
+
+		<dependency>
+		   <groupId>xerces</groupId>
+		   <artifactId>xercesImpl</artifactId>
+		   <version>2.12.0</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>log4j-over-slf4j</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                   <artifactId>logback-classic</artifactId>
+                </exclusion>
+			</exclusions> 
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-web</artifactId>
+		    <!-- <version>2.0.3.RELEASE</version> --><!--$NO-MVN-MAN-VER$-->
+		    <exclusions>
+		    	<exclusion>
+		    		<artifactId>hibernate-validator</artifactId>
+		    		<groupId>org.hibernate</groupId>
+		    	</exclusion>
+		    </exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-boot-actuator</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<!-- <scope>provided</scope>	 -->
+		</dependency>
+
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.2.4</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
+	
+		<dependency>
+			<groupId>com.fasterxml</groupId>
+			<artifactId>classmate</artifactId>
+			<version>1.3.4</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.17</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
+
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.data</groupId>
+		    <artifactId>spring-data-commons</artifactId>
+		    <version>1.13.11.RELEASE</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.6</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.4.9</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
+      
+
+	</dependencies>
+</project>
