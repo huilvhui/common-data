@@ -5,9 +5,9 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.hikvision.dynamic.base.BasePageQuery;
-import com.hikvision.dynamic.constant.EnumStatisticsType;
-import com.hikvision.dynamic.data.constructor.PersistBodyConstruct;
+import com.xier.dynamic.base.BasePageQuery;
+import com.xier.dynamic.constant.EnumStatisticsType;
+import com.xier.dynamic.data.constructor.PersistBodyConstruct;
 
 /**
  * <p>
