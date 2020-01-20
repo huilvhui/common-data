@@ -1,106 +1,69 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<!-- <version>1.5.6.RELEASE</version> -->
+		<version>1.5.15.RELEASE</version>
+		
+		<relativePath />
+	</parent>
+
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.xier</groupId>
-	<artifactId>common-data</artifactId>
-	<version>1.27.0</version>
-
+	<artifactId>common-dynamic-data</artifactId>
 	<packaging>jar</packaging>
-	<name>common-data</name>
-	<description>An common data handler implementation.</description>
-	<url>https://github.com/alibaba/druid</url>
-
+	<name>common-dynamic-data</name>
+	<version>1.6-SNAPSHOT</version>
+	<description>common-dynamic-data</description>
 	<properties>
-		<spring.version>4.2.5.RELEASE</spring.version>
-		<junit.version>4.12</junit.version>
-		<jmh.version>1.19</jmh.version>
-
-		<gpg.skip>true</gpg.skip>
-		<javadoc.skip>true</javadoc.skip>
-
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jdk.version>1.6</jdk.version>
+		<spring-data.version>1.13.6.RELEASE</spring-data.version>
+		<swagger2markup.version>1.3.3</swagger2markup.version>
+		<swagger.output.dir>${project.build.directory}/swagger</swagger.output.dir>
+		<asciidoctor.input.directory>${project.basedir}/src/docs/asciidoc</asciidoctor.input.directory>
+		<swagger.snippetOutput.dir>${project.build.directory}/asciidoc/snippets</swagger.snippetOutput.dir>
+		<generated.asciidoc.directory>${project.build.directory}/asciidoc/generated</generated.asciidoc.directory>
+		<asciidoctor.html.output.directory>${project.build.directory}/asciidoc/html</asciidoctor.html.output.directory>
+		<asciidoctor.pdf.output.directory>${project.build.directory}/asciidoc/pdf</asciidoctor.pdf.output.directory>
+		<swagger.input>${swagger.output.dir}/swagger-demo-ui.json</swagger.input>
 	</properties>
 
-	<repositories>
-		<repository>
-			<id>local-file</id>
-			<url>file://${basedir}/lib/</url>
-			<layout>default</layout>
-		</repository>
-	</repositories>
 
-	<developers>
-		<developer>
-			<id>lvhui</id>
-			<name>lvhui</name>
-			<email>get110000@163.com</email>
-		</developer>
-	</developers>
-
-	<build>
-		<plugins>
-      <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version><!--$NO-MVN-MAN-VER$-->
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-					<encoding>utf-8</encoding>
-				</configuration>
-			</plugin>
-			<!-- findbugs -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>3.0.4</version>
-				<configuration>
-					<!-- <excludeFilterFile>tools/findbugs/findbugs-exclude.xml</excludeFilterFile> -->
-					<threshold>High</threshold>
-					<effort>Default</effort>
-					<findbugsXmlOutput>true</findbugsXmlOutput>
-					<findbugsXmlOutputDirectory>target/site/findbugs</findbugsXmlOutputDirectory>
-				</configuration>
-			</plugin>
+	<dependencies>
+	
+	
+		<dependency>
+			<groupId>com.google.collections</groupId>
+			<artifactId>google-collections</artifactId>
+			<version>1.0</version>	
+	
+		</dependency>
+		
+		<dependency>
+		    <groupId>com.google.guava</groupId>
+		    <artifactId>guava</artifactId>
+		    <version>25.1-jre</version>
+		    <exclusions>
+				<exclusion>
+					<artifactId>checker-compat-qual</artifactId>
+					<groupId>org.checkerframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 			
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<skip>false</skip>
-					<argLine>-Xms256m -Xmx256m -XX:PermSize=64m -XX:MaxPermSize=64m -Dfile.encoding=utf-8</argLine>
-					<includes>
-						<include>**/*Test.java</include>
-					</includes>
-					<systemPropertyVariables>
-						<io.springfox.staticdocs.outputDir>${project.build.directory}/swagger</io.springfox.staticdocs.outputDir>
-						<io.swagger.json.uris>/v2/api-docs?group=API,/v2/api-docs?group=service,/v2/api-docs?group=service1</io.swagger.json.uris>
-						<io.swagger.json.output.name>swagger-demo-api.json,swagger-ncg-api.json,swagger-ioc-api.json</io.swagger.json.output.name>
-					</systemPropertyVariables>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<configuration>
-					<format>xml</format>
-					<encoding>utf-8</encoding>
-					<instrumentation>
-					</instrumentation>
-				</configuration>
-			</plugin>
-			<!-- 加了这项配置，war包会有两个同名jar，因此去掉 -->
-			<!-- <plugin> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-maven-plugin</artifactId>
-				</plugin> -->	
-		</plugins>
-	</build>
-
-
-	<dependencies>  
-    <dependency>
+		
+		<dependency>
+			<groupId>com.google.collections</groupId>
+			<artifactId>google-collections</artifactId>
+			<version>1.0</version>	
+	
+		</dependency>
+	
+	<!-- 强行升级 -->
+		<dependency>
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-test</artifactId>
 		    <!-- <version>4.3.9.RELEASE</version> --><!--$NO-MVN-MAN-VER$-->
@@ -214,6 +177,7 @@
 		</dependency>
 		<!--  -->
 
+	
 		<dependency>  
 	            <groupId>org.springframework.boot</groupId>  
 	            <artifactId>spring-boot-starter-test</artifactId>  
@@ -225,6 +189,7 @@
 	            	</exclusion>
 	            </exclusions> -->
 		</dependency>
+		
 	
 		<dependency>
 			<groupId>org.springframework.ldap</groupId>
@@ -244,17 +209,7 @@
 		</dependency>
 
 		
-		<dependency>
-		    <groupId>com.google.guava</groupId>
-		    <artifactId>guava</artifactId>
-		    <version>25.1-jre</version>
-		    <exclusions>
-				<exclusion>
-					<artifactId>checker-compat-qual</artifactId>
-					<groupId>org.checkerframework</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+		
 
 		<dependency>
 				<groupId>org.easyframe</groupId>
@@ -277,6 +232,8 @@
 					</exclusion>
 				</exclusions>
 		</dependency>
+
+
 
 		<dependency>
 		   <groupId>org.apache.activemq</groupId>
@@ -303,6 +260,7 @@
                    <artifactId>logback-classic</artifactId>
                 </exclusion>
 			</exclusions> 
+			
 		</dependency>
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
@@ -361,6 +319,20 @@
 			<artifactId>spring-webmvc</artifactId>
 		</dependency>
 
+		<!-- <dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+		
+		<dependency>
+				<groupId>org.logback-extensions</groupId>
+				<artifactId>logback-ext-spring</artifactId>
+				<version>0.1.4</version>
+		</dependency> -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
@@ -375,7 +347,9 @@
 		<dependency>
 		    <groupId>org.springframework.data</groupId>
 		    <artifactId>spring-data-commons</artifactId>
-		    <version>1.13.11.RELEASE</version><!--$NO-MVN-MAN-VER$-->
+		   <!--  <version>1.13.11.RELEASE</version> --><!--$NO-MVN-MAN-VER$-->
+		    
+		    <version>1.13.23.RELEASE</version>
 		</dependency>
 
 
@@ -390,7 +364,166 @@
 			<artifactId>httpcore</artifactId>
 			<version>4.4.9</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
-      
+
 
 	</dependencies>
+
+	<build>
+
+	
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version><!--$NO-MVN-MAN-VER$-->
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>utf-8</encoding>
+				</configuration>
+			</plugin>
+			
+			<!-- 对ORM的实体进行静态增强插件 -->
+			<plugin>
+				<groupId>org.easyframe</groupId>
+				<artifactId>jef-maven-plugin</artifactId>
+				<version>1.11.9.4</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>enhance</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<!-- 在部分Maven插件上，为了避免非标准的Maven声明周期描述报错，需要添加下面这段 -->
+			<plugin>
+				<groupId>org.eclipse.m2e</groupId>
+				<artifactId>lifecycle-mapping</artifactId>
+				<configuration>
+					<lifecycleMappingMetadata>
+						<pluginExecutions>
+							<pluginExecution>
+								<pluginExecutionFilter>
+									<groupId>org.easyframe</groupId>
+									<artifactId>jef-maven-plugin</artifactId>
+									<versionRange>[1.0,)</versionRange>
+									<goals>
+										<goal>enhance</goal>
+									</goals>
+								</pluginExecutionFilter>
+								<action>
+									<ignore />
+								</action>
+							</pluginExecution>
+						</pluginExecutions>
+					</lifecycleMappingMetadata>
+				</configuration>
+			</plugin>
+			<!-- findbugs -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>3.0.4</version>
+				<configuration>
+					<!-- <excludeFilterFile>tools/findbugs/findbugs-exclude.xml</excludeFilterFile> -->
+					<threshold>High</threshold>
+					<effort>Default</effort>
+					<findbugsXmlOutput>true</findbugsXmlOutput>
+					<findbugsXmlOutputDirectory>target/site/findbugs</findbugsXmlOutputDirectory>
+				</configuration>
+			</plugin>
+			
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skip>false</skip>
+					<argLine>-Xms256m -Xmx256m -XX:PermSize=64m -XX:MaxPermSize=64m -Dfile.encoding=utf-8</argLine>
+					<includes>
+						<include>**/*Test.java</include>
+					</includes>
+					<systemPropertyVariables>
+						<io.springfox.staticdocs.outputDir>${project.build.directory}/swagger</io.springfox.staticdocs.outputDir>
+						<io.swagger.json.uris>/v2/api-docs?group=API,/v2/api-docs?group=service,/v2/api-docs?group=service1</io.swagger.json.uris>
+						<io.swagger.json.output.name>swagger-demo-api.json,swagger-ncg-api.json,swagger-ioc-api.json</io.swagger.json.output.name>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<configuration>
+					<format>xml</format>
+					<encoding>utf-8</encoding>
+					<instrumentation>
+					</instrumentation>
+				</configuration>
+			</plugin>
+			
+			
+			<!-- war打包插件, 设定war包名称不带版本号 --> 
+	        <!-- <plugin> 
+	            <groupId>org.apache.maven.plugins</groupId> 
+	            <artifactId>maven-war-plugin</artifactId> 
+	            <version>2.5</version> 
+	            <configuration> 
+	                <warName>${project.artifactId}</warName> 
+	                <webResources> 
+	                    <resource> 
+	                        <directory>target\ncg.war</directory> 
+	                        <includes> 
+	                            <include>*.*</include> 
+	                            <include>**/*.*</include>  
+	                        </includes>  
+	                        <filtering>true</filtering>  
+	                    </resource>  
+	                </webResources>  
+	            </configuration>  
+	        </plugin> -->
+			<!-- 加了这项配置，war包会有两个同名jar，因此去掉 -->
+			<!-- <plugin> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-maven-plugin</artifactId>
+				</plugin> -->		
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.easyframe</groupId>
+										<artifactId>
+											jef-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.11.0,)
+										</versionRange>
+										<goals>
+											<goal>enhance</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<!-- 内部开发版本发布库 -->
+	<distributionManagement>
+	</distributionManagement>
 </project>
