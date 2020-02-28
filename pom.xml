@@ -155,7 +155,7 @@
 		<dependency>
 			<artifactId>tomcat-embed-core</artifactId>
 			<groupId>org.apache.tomcat.embed</groupId>
-			<version>8.5.32</version><!--$NO-MVN-MAN-VER$-->
+			<version>8.5.51</version><!--$NO-MVN-MAN-VER$-->
 			<scope>provided</scope>
 		</dependency>
 		
